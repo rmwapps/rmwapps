@@ -2,12 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0;url=https://wa.me/6285274444440?text=Halo%2C+RMW+APPS.+Saya+butuh+bantuan..&type=phone_number
-">
-    <title>Mengarahkan ke Layanan RMW Apps</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membuka Layanan RMW Apps</title>
+    <script>
+        // Array of links to redirect to
+        var links = [
+            "https://wa.me/6281371144589?text=Hello%20RMW%20Apps%2C%20saya%20butuh%20bantuan%20transaksi...",
+			"https://wa.me/6281378534898?text=Hello%20RMW%20Apps%2C%20saya%20butuh%20bantuan%20transaksi..."
+            // Add more links here as needed
+        ];
+
+        // Function to randomly redirect to one of the links
+        function randomRedirect() {
+            var randomIndex = Math.floor(Math.random() * links.length);
+            window.location.href = links[randomIndex];
+        }
+
+        // Call the randomRedirect function when the page loads
+        window.onload = randomRedirect;
+    </script>
 </head>
 <body>
-    <p>Jika halaman tidak terbuka, <a href="https://wa.me/6285274444440?text=Halo%2C+RMW+APPS.+Saya+butuh+bantuan..&type=phone_number
-">klik di sini</a>.</p>
+    <p>Jika halaman tidak terbuka, <a href="#" onclick="randomRedirect(); return false;">klik di sini</a>.</p>
 </body>
 </html>
