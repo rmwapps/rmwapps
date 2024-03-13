@@ -3,9 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="refresh" content="0;url=https://t.me/informwapps/76">
-    <title>Redirecting to RMW Telegram Channel</title>
+    <title>Meneruskan ke Kanal Telegram RMW</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .loader,
+        .refresh-icon {
+            width: 50px;
+            height: 50px;
+        }
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .refresh-icon {
+            display: none;
+        }
+    </style>
+    <script>
+        setTimeout(function() {
+            document.querySelector('.loader').style.display = 'none';
+            document.querySelector('.refresh-icon').style.display = 'block';
+        }, 500); // Show refresh icon after 0.5 seconds
+    </script>
 </head>
 <body>
-    <p>If you are not redirected, <a href="https://t.me/informwapps/76">click here</a>.</p>
+    <div class="loader"></div>
+    <svg class="refresh-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#3498db"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10h-2c0 4.418-3.582 8-8 8s-8-3.582-8-8 3.582-8 8-8V2z"/><path d="M14.293 9.707l-1.414 1.414 2.586 2.586-2.586 2.586 1.414 1.414 3.5-3.5-3.5-3.5z"/></svg>
 </body>
 </html>
