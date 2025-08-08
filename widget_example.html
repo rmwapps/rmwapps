@@ -79,9 +79,6 @@
       .nav-button.webview {
         background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
       }
-      .nav-button.screen {
-        background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
-      }
       .nav-button.route {
         background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
       }
@@ -156,52 +153,35 @@
       <h1>🌐 Dynamic WebView Navigation Demo</h1>
 
       <div class="demo-section">
-        <div class="section-title">🔗 URL Protocol Navigation</div>
+        <div class="section-title">🚀 JavaScript Navigation</div>
         <div class="description">
-          Click these links to test different navigation protocols. The WebView
-          widget will intercept these URLs and navigate to the appropriate
-          screens in the Flutter app.
+          All navigation is now handled through JavaScript using the AppBridge
+          communication channel. This is more reliable and flexible than URL
+          protocols.
         </div>
 
-        <a href="webview://https://help.example.com" class="nav-button webview">
+        <button class="nav-button webview" onclick="openWebView()">
           📱 Open WebView Screen
-        </a>
+        </button>
 
-        <a href="screen://profile" class="nav-button screen">
-          👤 Open Profile Screen
-        </a>
-
-        <a
-          href="route://deposit?amount=100000&method=transfer"
-          class="nav-button route"
-        >
+        <button class="nav-button route" onclick="navigateToDeposit()">
           💰 Open Deposit with Args
-        </a>
+        </button>
 
-        <a href="external://https://www.google.com" class="nav-button external">
+        <button class="nav-button external" onclick="openExternal()">
           🌍 Open External Browser
-        </a>
-      </div>
+        </button>
 
-      <div class="demo-section">
-        <div class="section-title">📋 Submenu Navigation</div>
-        <div class="description">
-          Test navigation to submenus with complex data structures.
-        </div>
-
-        <a
-          href='submenu://{"submenuTitle":"Quick%20Actions","submenuStyle":"bottomSheet","submenuLayout":"grid","items":[{"title":"Transfer","iconUrl":"https://example.com/transfer.png","route":"/transfer"},{"title":"Pay%20Bills","iconUrl":"https://example.com/bills.png","route":"/bills"}]}'
-          class="nav-button submenu"
-        >
+        <button class="nav-button submenu" onclick="openSubmenu()">
           📋 Open Bottom Sheet Submenu
-        </a>
+        </button>
       </div>
 
       <div class="javascript-demo">
         <div class="js-title">⚡ JavaScript Integration</div>
         <div class="description" style="color: #ccc; margin-bottom: 15px">
-          Use JavaScript to communicate with the Flutter app through the
-          FlutterApp channel.
+          Use JavaScript to communicate with the app through the AppBridge
+          channel.
         </div>
 
         <button class="js-button" onclick="navigateToProduct()">
@@ -221,21 +201,99 @@
 
       <div class="note">
         <strong>📝 Implementation Notes:</strong><br />
-        • Use <code>webview://</code> to open URLs in WebView screen<br />
-        • Use <code>screen://</code> to navigate to dynamic screens<br />
-        • Use <code>route://</code> to navigate to any route with query
-        parameters<br />
-        • Use <code>submenu://</code> to open submenus with JSON data<br />
-        • Use <code>external://</code> to open URLs in external browser<br />
-        • JavaScript communication via <code>FlutterApp</code> channel
+        • All navigation uses JavaScript via
+        <code>AppBridge</code> channel<br />
+        • Use <code>action: 'webview'</code> to open URLs in WebView screen<br />
+        • Use <code>action: 'navigate'</code> for routes with optional
+        arguments<br />
+        • Use <code>action: 'submenu'</code> to open submenus with JSON data<br />
+        • Use <code>action: 'external'</code> to open URLs in external
+        browser<br />
+        • More reliable than URL protocols, supports complex data structures<br />
+        • <strong>Note:</strong> Screen navigation is only available through
+        main navigation system
       </div>
     </div>
 
     <script>
-      // JavaScript functions for Flutter communication
+      // Navigation functions using JavaScript communication
+      function openWebView() {
+        if (window.AppBridge) {
+          window.AppBridge.postMessage(
+            JSON.stringify({
+              action: "webview",
+              url: "https://help.example.com",
+              title: "Help Center",
+            }),
+          );
+        } else {
+          alert("AppBridge channel not available");
+        }
+      }
+
+      function navigateToDeposit() {
+        if (window.AppBridge) {
+          window.AppBridge.postMessage(
+            JSON.stringify({
+              action: "navigate",
+              route: "/deposit",
+              args: {
+                amount: 100000,
+                method: "transfer",
+              },
+            }),
+          );
+        } else {
+          alert("AppBridge channel not available");
+        }
+      }
+
+      function openExternal() {
+        if (window.AppBridge) {
+          window.AppBridge.postMessage(
+            JSON.stringify({
+              action: "external",
+              url: "https://www.google.com",
+            }),
+          );
+        } else {
+          alert("AppBridge channel not available");
+        }
+      }
+
+      function openSubmenu() {
+        if (window.AppBridge) {
+          window.AppBridge.postMessage(
+            JSON.stringify({
+              action: "submenu",
+              submenu: {
+                submenuTitle: "Quick Actions",
+                submenuStyle: "bottomSheet",
+                submenuLayout: "grid",
+                items: [
+                  {
+                    title: "Transfer",
+                    iconUrl: "https://example.com/transfer.png",
+                    route: "/transfer",
+                  },
+                  {
+                    title: "Pay Bills",
+                    iconUrl: "https://example.com/bills.png",
+                    route: "/bills",
+                  },
+                ],
+              },
+            }),
+          );
+        } else {
+          alert("AppBridge channel not available");
+        }
+      }
+
+      // JavaScript functions for app communication
       function navigateToProduct() {
-        if (window.FlutterApp) {
-          window.FlutterApp.postMessage(
+        if (window.AppBridge) {
+          window.AppBridge.postMessage(
             JSON.stringify({
               action: "navigate",
               route: "/product",
@@ -246,13 +304,13 @@
             }),
           );
         } else {
-          alert("FlutterApp channel not available");
+          alert("AppBridge channel not available");
         }
       }
 
       function navigateWithArgs() {
-        if (window.FlutterApp) {
-          window.FlutterApp.postMessage(
+        if (window.AppBridge) {
+          window.AppBridge.postMessage(
             JSON.stringify({
               action: "navigate",
               route: "/transfer",
@@ -264,13 +322,13 @@
             }),
           );
         } else {
-          alert("FlutterApp channel not available");
+          alert("AppBridge channel not available");
         }
       }
 
       function reloadPage() {
-        if (window.FlutterApp) {
-          window.FlutterApp.postMessage(
+        if (window.AppBridge) {
+          window.AppBridge.postMessage(
             JSON.stringify({
               action: "reload",
             }),
@@ -281,8 +339,8 @@
       }
 
       function goBack() {
-        if (window.FlutterApp) {
-          window.FlutterApp.postMessage(
+        if (window.AppBridge) {
+          window.AppBridge.postMessage(
             JSON.stringify({
               action: "back",
             }),
@@ -294,9 +352,10 @@
 
       // Add click logging for demonstration
       document.addEventListener("click", function (e) {
-        if (e.target.tagName === "A") {
-          console.log("Clicked link:", e.target.href);
-        }
+        console.log(
+          "Clicked button/link:",
+          e.target.textContent || e.target.tagName,
+        );
       });
     </script>
   </body>
