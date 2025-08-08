@@ -165,7 +165,11 @@
         </button>
 
         <button class="nav-button route" onclick="navigateToDeposit()">
-          💰 Open Deposit with Args
+          💰 Open Deposit
+        </button>
+
+        <button class="nav-button route" onclick="navigateToProfile()">
+          🤵🏻 Open Profile
         </button>
 
         <button class="nav-button external" onclick="openExternal()">
@@ -236,11 +240,20 @@
           window.AppBridge.postMessage(
             JSON.stringify({
               action: "navigate",
-              route: "/deposit",
-              args: {
-                amount: 100000,
-                method: "transfer",
-              },
+              route: "/menu_deposit",
+            }),
+          );
+        } else {
+          alert("AppBridge channel not available");
+        }
+      }
+
+      function navigateToProfile() {
+        if (window.AppBridge) {
+          window.AppBridge.postMessage(
+            JSON.stringify({
+              action: "navigate",
+              route: "/profile_screen",
             }),
           );
         } else {
