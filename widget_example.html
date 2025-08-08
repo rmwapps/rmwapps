@@ -3,111 +3,301 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact Support Widget</title>
+    <title>Dynamic WebView Navigation Demo</title>
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
       body {
         font-family:
           -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        margin: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
         padding: 20px;
-        background: transparent;
-        color: #333;
+        color: white;
       }
-      .card {
+
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
         background: rgba(255, 255, 255, 0.95);
-        border-radius: 12px;
-        padding: 20px;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        color: #2c3e50;
       }
-      .card h3 {
-        margin: 0 0 15px 0;
+
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 30px;
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .demo-section {
+        margin-bottom: 30px;
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 25px;
+        border-left: 5px solid #667eea;
+      }
+
+      .section-title {
         font-size: 18px;
         font-weight: 600;
-        color: #333;
+        color: #2c3e50;
+        margin-bottom: 15px;
       }
-      .button-group {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-      .btn {
-        display: inline-block;
-        padding: 10px 20px;
-        border-radius: 25px;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 14px;
-        transition: all 0.3s ease;
+
+      .nav-button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
         border: none;
+        border-radius: 12px;
+        padding: 15px 20px;
+        font-size: 14px;
+        font-weight: 500;
         cursor: pointer;
+        margin: 5px;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        text-align: center;
       }
-      .btn-secondary {
-        background: rgba(102, 126, 234, 0.1);
-        color: #667eea;
-        border: 1px solid rgba(102, 126, 234, 0.3);
-      }
-      .btn:hover {
+
+      .nav-button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        background: rgba(102, 126, 234, 0.2);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .nav-button.webview {
+        background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+      }
+      .nav-button.screen {
+        background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+      }
+      .nav-button.route {
+        background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+      }
+      .nav-button.submenu {
+        background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+      }
+      .nav-button.external {
+        background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+      }
+
+      .description {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 20px;
+        line-height: 1.5;
+      }
+
+      .note {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 20px;
+        color: #856404;
+        font-size: 13px;
+      }
+
+      .javascript-demo {
+        background: #2c3e50;
+        color: white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 20px;
+      }
+
+      .js-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #74b9ff;
+      }
+
+      .js-button {
+        background: #74b9ff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 15px;
+        font-size: 12px;
+        cursor: pointer;
+        margin: 5px;
+        transition: background-color 0.2s ease;
+        display: block;
+        width: 100%;
+      }
+
+      .js-button:hover {
+        background: #0984e3;
+      }
+
+      code {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: "Courier New", monospace;
+        font-size: 12px;
       }
     </style>
   </head>
   <body>
-    <div class="card">
-      <h3>📞 Contact & Support</h3>
-      <div class="button-group">
-        <a href="tel:+1234567890" class="btn btn-secondary">📞 Call Now</a>
-        <a href="mailto:support@example.com" class="btn btn-secondary"
-          >✉️ Email</a
+    <div class="container">
+      <h1>🌐 Dynamic WebView Navigation Demo</h1>
+
+      <div class="demo-section">
+        <div class="section-title">🔗 URL Protocol Navigation</div>
+        <div class="description">
+          Click these links to test different navigation protocols. The WebView
+          widget will intercept these URLs and navigate to the appropriate
+          screens in the Flutter app.
+        </div>
+
+        <a href="webview://https://help.example.com" class="nav-button webview">
+          📱 Open WebView Screen
+        </a>
+
+        <a href="screen://profile" class="nav-button screen">
+          👤 Open Profile Screen
+        </a>
+
+        <a
+          href="route://deposit?amount=100000&method=transfer"
+          class="nav-button route"
         >
-        <a href="webview://https://help.example.com" class="btn btn-secondary"
-          >🌐 Help Center</a
+          💰 Open Deposit with Args
+        </a>
+
+        <a href="external://https://www.google.com" class="nav-button external">
+          🌍 Open External Browser
+        </a>
+      </div>
+
+      <div class="demo-section">
+        <div class="section-title">📋 Submenu Navigation</div>
+        <div class="description">
+          Test navigation to submenus with complex data structures.
+        </div>
+
+        <a
+          href='submenu://{"submenuTitle":"Quick%20Actions","submenuStyle":"bottomSheet","submenuLayout":"grid","items":[{"title":"Transfer","iconUrl":"https://example.com/transfer.png","route":"/transfer"},{"title":"Pay%20Bills","iconUrl":"https://example.com/bills.png","route":"/bills"}]}'
+          class="nav-button submenu"
         >
+          📋 Open Bottom Sheet Submenu
+        </a>
+      </div>
+
+      <div class="javascript-demo">
+        <div class="js-title">⚡ JavaScript Integration</div>
+        <div class="description" style="color: #ccc; margin-bottom: 15px">
+          Use JavaScript to communicate with the Flutter app through the
+          FlutterApp channel.
+        </div>
+
+        <button class="js-button" onclick="navigateToProduct()">
+          🛍️ Navigate to Product (JS)
+        </button>
+
+        <button class="js-button" onclick="navigateWithArgs()">
+          🎯 Navigate with Arguments (JS)
+        </button>
+
+        <button class="js-button" onclick="reloadPage()">
+          🔄 Reload WebView (JS)
+        </button>
+
+        <button class="js-button" onclick="goBack()">← Go Back (JS)</button>
+      </div>
+
+      <div class="note">
+        <strong>📝 Implementation Notes:</strong><br />
+        • Use <code>webview://</code> to open URLs in WebView screen<br />
+        • Use <code>screen://</code> to navigate to dynamic screens<br />
+        • Use <code>route://</code> to navigate to any route with query
+        parameters<br />
+        • Use <code>submenu://</code> to open submenus with JSON data<br />
+        • Use <code>external://</code> to open URLs in external browser<br />
+        • JavaScript communication via <code>FlutterApp</code> channel
       </div>
     </div>
 
     <script>
-      // Add interactive JavaScript
-      document.addEventListener("DOMContentLoaded", function () {
-        // Add click effects to buttons
-        const buttons = document.querySelectorAll(".btn");
-        buttons.forEach((button) => {
-          button.addEventListener("click", function (e) {
-            // Add a ripple effect
-            const ripple = document.createElement("span");
-            ripple.style.position = "absolute";
-            ripple.style.borderRadius = "50%";
-            ripple.style.background = "rgba(102, 126, 234, 0.3)";
-            ripple.style.transform = "scale(0)";
-            ripple.style.animation = "ripple 0.6s linear";
-            ripple.style.left = e.clientX - e.target.offsetLeft + "px";
-            ripple.style.top = e.clientY - e.target.offsetTop + "px";
+      // JavaScript functions for Flutter communication
+      function navigateToProduct() {
+        if (window.FlutterApp) {
+          window.FlutterApp.postMessage(
+            JSON.stringify({
+              action: "navigate",
+              route: "/product",
+              args: {
+                productId: "demo-product-123",
+                category: "electronics",
+              },
+            }),
+          );
+        } else {
+          alert("FlutterApp channel not available");
+        }
+      }
 
-            this.style.position = "relative";
-            this.style.overflow = "hidden";
-            this.appendChild(ripple);
+      function navigateWithArgs() {
+        if (window.FlutterApp) {
+          window.FlutterApp.postMessage(
+            JSON.stringify({
+              action: "navigate",
+              route: "/transfer",
+              args: {
+                amount: 250000,
+                recipient: "John Doe",
+                note: "Payment from WebView",
+              },
+            }),
+          );
+        } else {
+          alert("FlutterApp channel not available");
+        }
+      }
 
-            setTimeout(() => {
-              ripple.remove();
-            }, 600);
-          });
-        });
+      function reloadPage() {
+        if (window.FlutterApp) {
+          window.FlutterApp.postMessage(
+            JSON.stringify({
+              action: "reload",
+            }),
+          );
+        } else {
+          location.reload();
+        }
+      }
+
+      function goBack() {
+        if (window.FlutterApp) {
+          window.FlutterApp.postMessage(
+            JSON.stringify({
+              action: "back",
+            }),
+          );
+        } else {
+          history.back();
+        }
+      }
+
+      // Add click logging for demonstration
+      document.addEventListener("click", function (e) {
+        if (e.target.tagName === "A") {
+          console.log("Clicked link:", e.target.href);
+        }
       });
-
-      // Add CSS animation for ripple effect
-      const style = document.createElement("style");
-      style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-        `;
-      document.head.appendChild(style);
     </script>
   </body>
 </html>
