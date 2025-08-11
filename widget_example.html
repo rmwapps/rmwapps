@@ -5,10 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Simple Widget</title>
     <style>
+      :root {
+        /* Default light theme colors */
+        --bg-color: #ffffff;
+        --text-color: #000000;
+        --button-bg: #667eea;
+        --button-hover: #5563c1;
+        --button-text: #ffffff;
+      }
+
+      [data-theme="dark"] {
+        /* Dark theme colors */
+        --bg-color: #1a1a1a;
+        --text-color: #ffffff;
+        --button-bg: #4a5568;
+        --button-hover: #2d3748;
+        --button-text: #ffffff;
+      }
+
       body {
         font-family: sans-serif;
         padding: 5px;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition:
+          background-color 0.3s,
+          color 0.3s;
       }
+
       button {
         width: 100%;
         padding: 12px;
@@ -17,12 +41,13 @@
         border: none;
         border-radius: 8px;
         cursor: pointer;
-        background: #667eea;
-        color: white;
+        background: var(--button-bg);
+        color: var(--button-text);
         transition: background 0.2s;
       }
+
       button:hover {
-        background: #5563c1;
+        background: var(--button-hover);
       }
     </style>
   </head>
@@ -33,6 +58,20 @@
     <button onclick="openSubmenu()">📋 Bottom Sheet Menu</button>
 
     <script>
+      // Function to update theme
+      function updateTheme(theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+      }
+
+      // Check if AppBridge is available and request theme
+      if (window.AppBridge) {
+        window.AppBridge.postMessage(
+          JSON.stringify({
+            action: "getTheme",
+          }),
+        );
+      }
+
       function navigateToDeposit() {
         if (window.AppBridge) {
           window.AppBridge.postMessage(
