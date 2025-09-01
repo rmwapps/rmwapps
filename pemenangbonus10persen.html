@@ -57,6 +57,14 @@
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            min-width: 500px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin-top: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
         
         .winners-table th {
@@ -66,6 +74,9 @@
             text-align: left;
             font-weight: 600;
             font-size: 1.1em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
         
         .winners-table td {
@@ -151,21 +162,209 @@
         }
         
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 15px;
+                margin: 0;
+            }
+            
+            .header {
+                padding: 30px 15px;
+            }
+            
             .header h1 {
-                font-size: 2em;
+                font-size: 1.8em;
+                line-height: 1.2;
+            }
+            
+            .header p {
+                font-size: 1em;
             }
             
             .content {
-                padding: 20px;
+                padding: 20px 15px;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                margin-bottom: 25px;
+            }
+            
+            .stat-card {
+                padding: 20px 15px;
+            }
+            
+            .stat-card h3 {
+                font-size: 1.6em;
+            }
+            
+            .stat-card p {
+                font-size: 1em;
+            }
+            
+            .table-container {
+                margin-top: 20px;
             }
             
             .winners-table {
-                font-size: 0.9em;
+                font-size: 0.85em;
+                margin-top: 0;
             }
             
             .winners-table th,
             .winners-table td {
-                padding: 12px 8px;
+                padding: 8px 4px;
+                word-wrap: break-word;
+                max-width: 90px;
+                font-size: 0.8em;
+            }
+            
+            .winners-table th:nth-child(1),
+            .winners-table td:nth-child(1) {
+                min-width: 40px;
+                max-width: 40px;
+                text-align: center;
+            }
+            
+            .winners-table th:nth-child(2),
+            .winners-table td:nth-child(2) {
+                min-width: 70px;
+                max-width: 70px;
+            }
+            
+            .winners-table th:nth-child(3),
+            .winners-table td:nth-child(3) {
+                min-width: 90px;
+                max-width: 90px;
+            }
+            
+            .winners-table th:nth-child(4),
+            .winners-table td:nth-child(4) {
+                min-width: 90px;
+                max-width: 90px;
+            }
+            
+            .winners-table th:nth-child(5),
+            .winners-table td:nth-child(5) {
+                min-width: 90px;
+                max-width: 90px;
+            }
+            
+            .rank {
+                font-size: 0.9em;
+            }
+            
+            .rank-1 {
+                font-size: 1em;
+            }
+            
+            .rank-2 {
+                font-size: 0.95em;
+            }
+            
+            .rank-3 {
+                font-size: 0.9em;
+            }
+            
+            .rebate-amount {
+                font-size: 1em;
+            }
+            
+            .total-amount {
+                font-size: 0.9em;
+            }
+            
+            .footer {
+                padding: 20px 15px;
+                font-size: 0.8em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+            
+            .header {
+                padding: 25px 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.5em;
+            }
+            
+            .content {
+                padding: 15px 10px;
+            }
+            
+            .table-container {
+                margin-top: 15px;
+            }
+            
+            .winners-table {
+                font-size: 0.75em;
+                margin-top: 0;
+            }
+            
+            .winners-table th,
+            .winners-table td {
+                padding: 6px 3px;
+                font-size: 0.7em;
+            }
+            
+            .winners-table th:nth-child(1),
+            .winners-table td:nth-child(1) {
+                min-width: 35px;
+                max-width: 35px;
+                text-align: center;
+            }
+            
+            .winners-table th:nth-child(2),
+            .winners-table td:nth-child(2) {
+                min-width: 60px;
+                max-width: 60px;
+            }
+            
+            .winners-table th:nth-child(3),
+            .winners-table td:nth-child(3) {
+                min-width: 75px;
+                max-width: 75px;
+            }
+            
+            .winners-table th:nth-child(4),
+            .winners-table td:nth-child(4) {
+                min-width: 75px;
+                max-width: 75px;
+            }
+            
+            .winners-table th:nth-child(5),
+            .winners-table td:nth-child(5) {
+                min-width: 75px;
+                max-width: 75px;
+            }
+            
+            .stat-card h3 {
+                font-size: 1.4em;
+            }
+            
+            .rank {
+                font-size: 0.8em;
+            }
+            
+            .rank-1 {
+                font-size: 0.9em;
+            }
+            
+            .rank-2 {
+                font-size: 0.85em;
+            }
+            
+            .rank-3 {
+                font-size: 0.8em;
             }
         }
     </style>
@@ -195,18 +394,19 @@
             
             <h2 style="text-align: center; margin-bottom: 20px; color: #2c3e50;">📊 Daftar Pemenang</h2>
             
-            <table class="winners-table">
-                <thead>
-                    <tr>
-                        <th>🏆 Peringkat</th>
-                        <th>👤 ID Reseller</th>
-                        <th>📝 Nama</th>
-                        <th>💰 Total Komisi</th>
-                        <th>🎁 Hadiah Rebate</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
+            <div class="table-container">
+                <table class="winners-table">
+                    <thead>
+                        <tr>
+                            <th>🏆 Peringkat</th>
+                            <th>👤 ID Reseller</th>
+                            <th>📝 Nama</th>
+                            <th>💰 Total Komisi</th>
+                            <th>🎁 Hadiah Rebate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
                 <tr>
                     <td><span class="rank-1">#1</span></td>
                     <td><strong>APP***36</strong></td>
@@ -1558,8 +1758,9 @@
                     <td class="total-amount">Rp 10.100</td>
                     <td class="rebate-amount">Rp 1.515</td>
                 </tr>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
         
         <div class="footer">
