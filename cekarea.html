@@ -14,14 +14,51 @@
             height: 100%;
             overflow: hidden;
         }
-        #pdf-viewer {
+        #pdf-container {
             width: 100%;
             height: 100vh;
-            border: none;
+            overflow: auto;
+            background: #525252;
+        }
+        canvas {
+            display: block;
+            margin: 10px auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
     </style>
 </head>
 <body>
-    <iframe id="pdf-viewer" src="doc.pdf" type="application/pdf"></iframe>
+    <div id="pdf-container"></div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        
+        const url = 'doc.pdf';
+        const container = document.getElementById('pdf-container');
+        
+        pdfjsLib.getDocument(url).promise.then(pdf => {
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                pdf.getPage(pageNum).then(page => {
+                    const scale = 1.5;
+                    const viewport = page.getViewport({ scale });
+                    
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    
+                    container.appendChild(canvas);
+                    
+                    page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    });
+                });
+            }
+        }).catch(error => {
+            container.innerHTML = '<p style="color:white; padding:20px;">Error loading PDF: ' + error.message + '</p>';
+        });
+    </script>
 </body>
 </html>
