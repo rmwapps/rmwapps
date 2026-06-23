@@ -1,118 +1,221 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Download RMWApps APK</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #0d1117;
-      color: #c9d1d9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .card {
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 12px;
-      padding: 2rem;
-      text-align: center;
-      max-width: 420px;
-      width: 90%;
-    }
-    h1 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #f0f6fc; }
-    p { margin-bottom: 1.25rem; color: #8b949e; line-height: 1.5; }
-    .status {
-      background: #21262d;
-      border: 1px solid #30363d;
-      border-radius: 8px;
-      padding: 1rem;
-      margin: 1rem 0;
-      font-size: 0.9rem;
-    }
-    .btn {
-      display: inline-block;
-      background: #238636;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 0.75rem 1.75rem;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.2s;
-    }
-    .btn:hover { background: #2ea043; }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .version {
-      font-size: 0.8rem;
-      color: #58a6ff;
-      margin-top: 0.5rem;
-    }
-    .error { color: #f85149; }
-    .success { color: #3fb950; }
-    a { color: #58a6ff; }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <h1>⬇️ RMWApps APK</h1>
-    <p>Download the latest version automatically.</p>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Download RMWApps APK</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    sans-serif;
+                background: #0d1117;
+                color: #c9d1d9;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+            }
+            .card {
+                background: #161b22;
+                border: 1px solid #30363d;
+                border-radius: 12px;
+                padding: 2rem;
+                text-align: center;
+                max-width: 420px;
+                width: 90%;
+            }
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+                color: #f0f6fc;
+            }
+            p {
+                margin-bottom: 1.25rem;
+                color: #8b949e;
+                line-height: 1.5;
+            }
+            .status {
+                background: #21262d;
+                border: 1px solid #30363d;
+                border-radius: 8px;
+                padding: 1rem;
+                margin: 1rem 0;
+                font-size: 0.9rem;
+            }
+            .btn {
+                display: inline-block;
+                background: #238636;
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                padding: 0.75rem 1.75rem;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                text-decoration: none;
+                transition: background 0.2s;
+            }
+            .btn:hover {
+                background: #2ea043;
+            }
+            .btn:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+            .divider {
+                margin: 1.25rem 0 1rem;
+                color: #484f58;
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .divider::before,
+            .divider::after {
+                content: "";
+                flex: 1;
+                height: 1px;
+                background: #21262d;
+            }
+            .badge-row {
+                display: flex;
+                gap: 0.75rem;
+                justify-content: center;
+                align-items: center;
+            }
+            .play-badge {
+                display: inline-block;
+                flex: 1;
+                min-width: 0;
+                transition: opacity 0.2s;
+            }
+            .play-badge:hover {
+                opacity: 0.85;
+            }
+            .play-badge-img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+            .version {
+                font-size: 0.8rem;
+                color: #58a6ff;
+                margin-top: 0.5rem;
+            }
+            .error {
+                color: #f85149;
+            }
+            .success {
+                color: #3fb950;
+            }
+            a {
+                color: #58a6ff;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="card">
+            <h1>⬇️ RMWApps APK</h1>
+            <p>Download the latest version automatically.</p>
 
-    <div class="status" id="status">Checking for latest release…</div>
-    <button class="btn" id="dlBtn" onclick="downloadAPK()" disabled>Download APK</button>
-    <div class="version" id="version"></div>
-  </div>
+            <div class="status" id="status">Checking for latest release…</div>
+            <button class="btn" id="dlBtn" onclick="downloadAPK()" disabled>
+                Download APK
+            </button>
+            <div class="version" id="version"></div>
 
-  <script>
-    const API = 'https://api.github.com/repos/rmwapps/rmwapps/releases/latest';
-    let downloadUrl = null;
+            <div class="divider">or</div>
 
-    async function init() {
-      const status = document.getElementById('status');
-      const btn = document.getElementById('dlBtn');
-      const ver = document.getElementById('version');
+            <div class="badge-row">
+                <a
+                    class="play-badge"
+                    href="https://play.google.com/store/apps/details?id=com.otoreport.myrmwapps"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    <img
+                        src="GetItOnGooglePlay_Badge_Web_color_Indonesian.png"
+                        alt="Get it on Google Play"
+                        class="play-badge-img"
+                    />
+                </a>
 
-      try {
-        const res = await fetch(API);
-        if (!res.ok) throw new Error(`GitHub API error (${res.status})`);
-        const release = await res.json();
-        const asset = release.assets.find(a => a.name === 'rmwapps.apk');
+                <a
+                    class="play-badge"
+                    href="https://apps.apple.com/id/app/rmw-apps/id6748542409"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    <img
+                        src="Download_on_the_App_Store_Badge.svg.png"
+                        alt="Download on the App Store"
+                        class="play-badge-img"
+                    />
+                </a>
+            </div>
+        </div>
 
-        if (!asset) {
-          status.innerHTML = '❌ <span class="error">No rmwapps.apk found in the latest release.</span>';
-          return;
-        }
+        <script>
+            const API =
+                "https://api.github.com/repos/rmwapps/rmwapps/releases/latest";
+            let downloadUrl = null;
 
-        downloadUrl = asset.browser_download_url;
-        ver.textContent = release.tag_name + (release.prerelease ? ' (pre-release)' : '');
-        status.innerHTML = '✅ <span class="success">Latest release ready.</span>';
-        btn.disabled = false;
-        btn.textContent = `Download ${release.tag_name}`;
-      } catch (err) {
-        status.innerHTML = `⚠️ <span class="error">${err.message}</span>`;
-        if (err.message.includes('rate limit')) {
-          status.innerHTML += '<br><small>Try again later, or <a href="https://github.com/rmwapps/rmwapps/releases">visit releases page</a>.</small>';
-        }
-      }
-    }
+            async function init() {
+                const status = document.getElementById("status");
+                const btn = document.getElementById("dlBtn");
+                const ver = document.getElementById("version");
 
-    function downloadAPK() {
-      if (!downloadUrl) return;
-      const a = document.createElement('a');
-      a.href = downloadUrl;
-      a.download = 'rmwapps.apk';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
+                try {
+                    const res = await fetch(API);
+                    if (!res.ok)
+                        throw new Error(`GitHub API error (${res.status})`);
+                    const release = await res.json();
+                    const asset = release.assets.find(
+                        (a) => a.name === "rmwapps.apk",
+                    );
 
-    init();
-  </script>
-</body>
+                    if (!asset) {
+                        status.innerHTML =
+                            '❌ <span class="error">No rmwapps.apk found in the latest release.</span>';
+                        return;
+                    }
+
+                    downloadUrl = asset.browser_download_url;
+                    ver.textContent =
+                        release.tag_name +
+                        (release.prerelease ? " (pre-release)" : "");
+                    status.innerHTML =
+                        '✅ <span class="success">Latest release ready.</span>';
+                    btn.disabled = false;
+                    btn.textContent = `Download ${release.tag_name}`;
+                } catch (err) {
+                    status.innerHTML = `⚠️ <span class="error">${err.message}</span>`;
+                    if (err.message.includes("rate limit")) {
+                        status.innerHTML +=
+                            '<br><small>Try again later, or <a href="https://github.com/rmwapps/rmwapps/releases">visit releases page</a>.</small>';
+                    }
+                }
+            }
+
+            function downloadAPK() {
+                if (!downloadUrl) return;
+                const a = document.createElement("a");
+                a.href = downloadUrl;
+                a.download = "rmwapps.apk";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+
+            init();
+        </script>
+    </body>
 </html>
